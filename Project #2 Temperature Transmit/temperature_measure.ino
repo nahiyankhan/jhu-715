@@ -1,38 +1,31 @@
 //TMP36 Pin Variables
 int sensorPin = 0;
-int sensorInput;
+float sensorInput;
 float voltage;
- 
-/*
- * setup() - this function runs once when you turn your Arduino on
- * We initialize the serial connection with the computer
- */
-void setup()
-{
-  Serial.begin(9600);  //Start the serial connection with the computer
-                       //to view the result open the serial monitor 
+unsigned long timeStamp;
+
+void setup() {
+  Serial.begin(9600);
 }
  
-void loop()                     // run over and over again
-{
+void loop() {
  //getting the voltage reading from the temperature sensor
  sensorInput = analogRead(sensorPin);  
+ timeStamp = millis();
+
+ // converting time stamp to seconds
+ timeStamp /= 1000;
  
- // converting that reading to voltage, for 3.3v arduino use 3.3
+ // converting that reading to voltag
  voltage = sensorInput * 5;
  voltage /= 1024.0; 
  
- // print out the voltage
- Serial.print(voltage); Serial.println(" volts");
- 
- // now print out the temperature
- float temperatureC = (voltage - 0.5) * 100 ;  //converting from 10 mv per degree wit 500 mV offset
-                                               //to degrees ((voltage - 500mV) times 100)
- Serial.print(temperatureC); Serial.println(" degrees C");
+ // convert voltage to celsius
+ float celsius = (voltage - 0.5) * 100;
  
  // now convert to Fahrenheit
- float temperatureF = (temperatureC * 9.0 / 5.0) + 32.0;
- Serial.print(temperatureF); Serial.println(" degrees F");
+ float fahrenheit = (celsius * 9.0 / 5.0) + 32.0;
+ Serial.print(timeStamp); Serial.print(","); Serial.print(fahrenheit); Serial.println("F");
 
  // delay by 10 seconds
  delay(10000);
